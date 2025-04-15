@@ -18,6 +18,19 @@ public class PlayerContorller : MonoBehaviour
     private bool isGiant = false;
     private float originalSpeed;
 
+    public GameObject jumpItemImage;
+
+    private bool isJumpBoosted = false;
+    private float originalJumpForce;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        pAni = GetComponent<Animator>();
+        originalSpeed = moveSpeed;
+        originalJumpForce = jumpForce;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Respawn"))
@@ -30,7 +43,6 @@ public class PlayerContorller : MonoBehaviour
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
-
         if (collision.CompareTag("Enemy"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -38,18 +50,18 @@ public class PlayerContorller : MonoBehaviour
 
         if (collision.CompareTag("Item"))
         {
-            isGiant = true;
             Destroy(collision.gameObject);
-            StartCoroutine(GiantModeCoroutine());
+            StartCoroutine(SpeedBoostCoroutine());
         }
 
-    }
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        pAni = GetComponent<Animator>();
-        originalSpeed = moveSpeed;
+        if (collision.CompareTag("Jump Item"))
+        {
+            isJumpBoosted = true;
+            jumpItemImage.SetActive(true);
+            jumpForce = 8f;
+            Destroy(collision.gameObject);
+            StartCoroutine(JumpBoostCoroutine());
+        }
     }
 
     private void Update()
@@ -65,12 +77,14 @@ public class PlayerContorller : MonoBehaviour
             if (moveInput > 0)
                 transform.localScale = new Vector3(-2f, 2f, 1f);
         }
+        else
+        {
+            if (moveInput < 0)
+                transform.localScale = new Vector3(1f, 1f, 1f);
 
-        if (moveInput < 0)
-            transform.localScale = new Vector3(1f, 1f, 1f);
-
-        if (moveInput > 0)
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            if (moveInput > 0)
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
@@ -79,15 +93,28 @@ public class PlayerContorller : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             pAni.SetTrigger("JumpAction");
         }
-
-
     }
 
     private IEnumerator GiantModeCoroutine()
     {
-        moveSpeed = 10f;
+        moveSpeed = 8f;
         yield return new WaitForSeconds(5f);
         moveSpeed = originalSpeed;
         isGiant = false;
+    }
+
+    private IEnumerator SpeedBoostCoroutine()
+    {
+        moveSpeed = 8f;
+        yield return new WaitForSeconds(5f);
+        moveSpeed = originalSpeed;
+    }
+
+    private IEnumerator JumpBoostCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+        jumpForce = originalJumpForce;
+        isJumpBoosted = false;
+        jumpItemImage.SetActive(false);
     }
 }
