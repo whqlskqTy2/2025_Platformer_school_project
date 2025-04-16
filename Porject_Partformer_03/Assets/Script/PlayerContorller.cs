@@ -23,6 +23,8 @@ public class PlayerContorller : MonoBehaviour
     private bool isJumpBoosted = false;
     private float originalJumpForce;
 
+    private bool isInvincible = false; // 무적 상태 변수
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -35,7 +37,14 @@ public class PlayerContorller : MonoBehaviour
     {
         if (collision.CompareTag("Respawn"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (!isInvincible)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                Debug.Log("무적 상태이므로 Respawn 타일 위에 있지만 죽지 않습니다.");
+            }
         }
 
         if (collision.CompareTag("Finish"))
@@ -45,7 +54,10 @@ public class PlayerContorller : MonoBehaviour
 
         if (collision.CompareTag("Enemy"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (!isInvincible)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
 
         if (collision.CompareTag("Item"))
@@ -61,6 +73,12 @@ public class PlayerContorller : MonoBehaviour
             jumpForce = 8f;
             Destroy(collision.gameObject);
             StartCoroutine(JumpBoostCoroutine());
+        }
+
+        if (collision.CompareTag("invincibility_Item"))
+        {
+            Destroy(collision.gameObject);
+            StartCoroutine(InvincibilityCoroutine());
         }
     }
 
@@ -116,5 +134,13 @@ public class PlayerContorller : MonoBehaviour
         jumpForce = originalJumpForce;
         isJumpBoosted = false;
         jumpItemImage.SetActive(false);
+    }
+
+    private IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+       
+        yield return new WaitForSeconds(3f);
+        isInvincible = false;
     }
 }

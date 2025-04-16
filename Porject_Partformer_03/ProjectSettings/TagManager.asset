@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - Item
   - Jump Item
+  - invincibility_Item
   layers:
   - Default
   - TransparentFX
