@@ -353,6 +353,7 @@
 "Assets/Script/LevelObject.cs"
 "Assets/Script/PlayerContorller.cs"
 "Assets/Script/TilemapDisabler.cs"
+"Assets/Script/UIManager.cs"
 -langversion:9.0
 /deterministic
 /optimize+
