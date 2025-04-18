@@ -69,7 +69,6 @@ public class PlayerContorller : MonoBehaviour
         if (collision.CompareTag("Jump Item"))
         {
             isJumpBoosted = true;
-            jumpItemImage.SetActive(true);
             jumpForce = 8f;
             Destroy(collision.gameObject);
             StartCoroutine(JumpBoostCoroutine());
@@ -133,7 +132,6 @@ public class PlayerContorller : MonoBehaviour
         yield return new WaitForSeconds(5f);
         jumpForce = originalJumpForce;
         isJumpBoosted = false;
-        jumpItemImage.SetActive(false);
     }
 
     private IEnumerator InvincibilityCoroutine()

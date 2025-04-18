@@ -350,8 +350,10 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.58f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Script/EnemyController.cs"
 "Assets/Script/EnemyTraceController.cs"
+"Assets/Script/HelpUIManager.cs"
 "Assets/Script/LevelObject.cs"
 "Assets/Script/PlayerContorller.cs"
+"Assets/Script/SceneChanger.cs"
 "Assets/Script/TilemapDisabler.cs"
 "Assets/Script/UIManager.cs"
 -langversion:9.0
