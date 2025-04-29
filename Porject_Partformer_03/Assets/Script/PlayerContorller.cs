@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,12 +24,16 @@ public class PlayerContorller : MonoBehaviour
 
     private bool isInvincible = false; // 무적 상태 변수
 
+    float score;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         pAni = GetComponent<Animator>();
         originalSpeed = moveSpeed;
         originalJumpForce = jumpForce;
+
+        score = 1000f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,6 +52,8 @@ public class PlayerContorller : MonoBehaviour
 
         if (collision.CompareTag("Finish"))
         {
+            HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score);
+
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
@@ -110,6 +115,8 @@ public class PlayerContorller : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             pAni.SetTrigger("JumpAction");
         }
+
+        score -= Time.deltaTime;
     }
 
     private IEnumerator GiantModeCoroutine()
