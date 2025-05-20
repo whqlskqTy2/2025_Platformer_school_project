@@ -355,6 +355,8 @@
 "Assets/Script/EnemyTraceController.cs"
 "Assets/Script/GameManager.cs"
 "Assets/Script/HelpUIManager.cs"
+"Assets/Script/ItemObject.cs"
+"Assets/Script/ItemOS.cs"
 "Assets/Script/LeaderBoard.cs"
 "Assets/Script/LevelObject.cs"
 "Assets/Script/PlayerContorller.cs"

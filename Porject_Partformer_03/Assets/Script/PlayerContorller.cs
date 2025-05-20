@@ -24,7 +24,7 @@ public class PlayerContorller : MonoBehaviour
 
     private bool isInvincible = false; // 무적 상태 변수
 
-    float score;
+    public float score;
 
     private void Awake()
     {
@@ -84,6 +84,18 @@ public class PlayerContorller : MonoBehaviour
         {
             Destroy(collision.gameObject);
             StartCoroutine(InvincibilityCoroutine());
+        }
+
+        // 충돌한 오브젝트의 태그가 "Item"일 경우에만 실행
+        if (collision.CompareTag("Item"))
+        {
+            isGiant = true;  // 플레이어 상태를 거인으로 변경
+
+            // 충돌한 오브젝트에 붙은 ItemObject 컴포넌트에서 점수를 가져와 누적
+            score += collision.GetComponent<ItemObject>().GetPoint();
+
+            // 아이템 오브젝트 제거
+            Destroy(collision.gameObject);
         }
     }
 
